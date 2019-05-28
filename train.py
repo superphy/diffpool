@@ -79,8 +79,13 @@ def gen_prefix(args):
         name += '_' + args.name_suffix
     return name
 
-def gen_train_plt_name(args):
-    return 'results/' + gen_prefix(args) + '.png'
+def gen_train_plt_name(args, iteration: int = None):
+    if iteration:
+        return 'results/{}_{}_{}.png'.format(
+            gen_prefix(args), iteration, datetime.date.today()
+        )
+    else:
+        return 'results/' + gen_prefix(args) + '.png'
 
 def log_assignment(assign_tensor, writer, epoch, batch_idx):
     plt.switch_backend('agg')
@@ -270,9 +275,7 @@ def train(dataset, model, args, same_feat=True, val_dataset=None, test_dataset=N
         plt.plot(best_val_epochs, best_val_accs, 'bo')
         plt.legend(['train', 'val'])
     if iteration:
-        plt.savefig(gen_train_plt_name(args) + '_{}_{}'.format(
-            iteration, datetime.date.today()
-        ), dpi=600)
+        plt.savefig(gen_train_plt_name(args, iteration), dpi=600)
     else:
         plt.savefig(gen_train_plt_name(args), dpi=600)
     plt.close()
