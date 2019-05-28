@@ -482,7 +482,7 @@ def benchmark_task(args, writer=None, feat='node-label'):
     evaluate(test_dataset, model, args, 'Validation')
 
 
-def benchmark_task_val(args, writer=None, feat='node-label'):
+def benchmark_task_val(args, writer=None, feat='node-label', iterations: int = 10):
     all_vals = []
     graphs = load_data.read_graphfile(args.datadir, args.bmname, max_nodes=args.max_nodes)
     
@@ -500,7 +500,7 @@ def benchmark_task_val(args, writer=None, feat='node-label'):
         for G in graphs:
             featgen_const.gen_node_features(G)
 
-    for i in range(10):
+    for i in range(iterations):
         train_dataset, val_dataset, max_num_nodes, input_dim, assign_input_dim = \
                 cross_val.prepare_val_data(graphs, args, i, max_nodes=args.max_nodes)
         if args.method == 'soft-assign':
@@ -604,6 +604,10 @@ def arg_parse():
     parser.add_argument('--name-suffix', dest='name_suffix',
             help='suffix added to the output filename')
 
+    parser.add_argument('--benchmark-iterations', dest='benchmark_iterations',
+                        help='number of iterations to use in the benchmark',
+                        default=10, type=int)
+
     parser.set_defaults(datadir='data',
                         logdir='log',
                         dataset='syn1v2',
@@ -645,7 +649,8 @@ def main():
     print('CUDA', prog_args.cuda)
 
     if prog_args.bmname is not None:
-        benchmark_task_val(prog_args, writer=writer)
+        benchmark_task_val(prog_args, writer=writer,
+                           iterations=prog_args.benchmark_iterations)
     elif prog_args.pkl_fname is not None:
         pkl_task(prog_args)
     elif prog_args.dataset is not None:
