@@ -18,6 +18,7 @@ import pickle
 import random
 import shutil
 import time
+import datetime
 
 import cross_val
 import encoders
@@ -171,7 +172,7 @@ def log_graph(adj, batch_num_nodes, writer, epoch, batch_idx, assign_tensor=None
 
 
 def train(dataset, model, args, same_feat=True, val_dataset=None, test_dataset=None, writer=None,
-        mask_nodes = True):
+        mask_nodes = True, iteration: int = None):
     writer_batch_idx = [0, 3, 6, 9]
     
     optimizer = torch.optim.Adam(filter(lambda p : p.requires_grad, model.parameters()), lr=0.001)
@@ -268,7 +269,12 @@ def train(dataset, model, args, same_feat=True, val_dataset=None, test_dataset=N
     else:
         plt.plot(best_val_epochs, best_val_accs, 'bo')
         plt.legend(['train', 'val'])
-    plt.savefig(gen_train_plt_name(args), dpi=600)
+    if iteration:
+        plt.savefig(gen_train_plt_name(args) + '_{}_{}'.format(
+            iteration, datetime.date.today()
+        ), dpi=600)
+    else:
+        plt.savefig(gen_train_plt_name(args), dpi=600)
     plt.close()
     matplotlib.style.use('default')
 
@@ -286,7 +292,7 @@ def prepare_data(graphs, args, test_graphs=None, max_nodes=0):
     else:
         train_idx = int(len(graphs) * args.train_ratio)
         train_graphs = graphs[:train_idx]
-        val_graphs = graph[train_idx:]
+        val_graphs = graphs[train_idx:]
     print('Num training graphs: ', len(train_graphs), 
           '; Num validation graphs: ', len(val_graphs),
           '; Num testing graphs: ', len(test_graphs))
@@ -514,8 +520,13 @@ def benchmark_task_val(args, writer=None, feat='node-label'):
                     args.num_gc_layers, bn=args.bn, dropout=args.dropout, args=args).cuda()
 
         _, val_accs = train(train_dataset, model, args, val_dataset=val_dataset, test_dataset=None,
-            writer=writer)
+            writer=writer, iteration=i)
         all_vals.append(np.array(val_accs))
+        torch.save(
+            model,
+            open(gen_train_plt_name(args) + '_{}_{}.pkl'.format(
+                i, datetime.date.today()), 'wb')
+        )
     all_vals = np.vstack(all_vals)
     all_vals = np.mean(all_vals, axis=0)
     print(all_vals)
