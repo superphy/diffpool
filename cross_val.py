@@ -9,7 +9,7 @@ from graph_sampler import GraphSampler
 
 def prepare_val_data(graphs, args, val_idx, max_nodes=0):
 
-    random.shuffle(graphs)
+    np.random.shuffle(graphs)
     val_size = len(graphs) // 10
     train_graphs = graphs[:val_idx * val_size]
     if val_idx < 9:
