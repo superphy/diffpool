@@ -17,11 +17,11 @@ def prepare_val_data(graphs, args, val_idx, max_nodes=0):
     print("p: {}".format(p))
     q = val_idx*val_size
     print("q: {}".format(q))
-    train_graphs = graphs[:q]
+    train_graphs = graphs[q:p]
     # if val_idx < 9:
         # TODO: fix this as well
         # train_graphs = train_graphs + graphs[p:]
-    val_graphs = graphs[q:p]
+    val_graphs = graphs[p:]
     print('Num training graphs: ', len(train_graphs), 
           '; Num validation graphs: ', len(val_graphs))
 
