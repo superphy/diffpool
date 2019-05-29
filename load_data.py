@@ -83,7 +83,13 @@ def _read_old(datadir, dataname, max_nodes=None):
     for k in index_graph.keys():
         index_graph[k] = [u - 1 for u in set(index_graph[k])]
 
+
     mmap_file = prefix + '_mmap.dat'
+    try:
+        os.remove(mmap_file)
+    except:
+        pass
+    print("Creating mmap array with len {}".format(len(graph_labels)))
     graphs = np.memmap(
         mmap_file, dtype=nx.Graph, mode='w+', shape=len(graph_labels))
     np_i = 0

@@ -11,10 +11,12 @@ def prepare_val_data(graphs, args, val_idx, max_nodes=0):
 
     np.random.shuffle(graphs)
     val_size = len(graphs) // 10
-    train_graphs = graphs[:val_idx * val_size]
+    p = (val_idx + 1) * val_size
+    q = val_idx*val_size
+    train_graphs = graphs[:q]
     if val_idx < 9:
-        train_graphs = train_graphs + graphs[(val_idx+1) * val_size :]
-    val_graphs = graphs[val_idx*val_size: (val_idx+1)*val_size]
+        train_graphs = train_graphs + graphs[p:]
+    val_graphs = graphs[q:p]
     print('Num training graphs: ', len(train_graphs), 
           '; Num validation graphs: ', len(val_graphs))
 
