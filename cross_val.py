@@ -12,8 +12,11 @@ def prepare_val_data(graphs, args, val_idx, max_nodes=0):
     # TODO: make shuffle work for numpy.memmap
     # np.random.shuffle(graphs)
     val_size = len(graphs) // 10
+    print("val_size: {}".format(val_size))
     p = (val_idx + 1) * val_size
+    print("p: {}".format(p))
     q = val_idx*val_size
+    print("q: {}".format(q))
     train_graphs = graphs[:q]
     # if val_idx < 9:
         # TODO: fix this as well
