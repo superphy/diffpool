@@ -13,15 +13,18 @@ def prepare_val_data(graphs, args, val_idx, max_nodes=0):
     # np.random.shuffle(graphs)
     val_size = len(graphs) // 10
     print("val_size: {}".format(val_size))
-    p = (val_idx + 1) * val_size
-    print("p: {}".format(p))
-    q = val_idx*val_size
-    print("q: {}".format(q))
-    train_graphs = graphs[q:p]
+
+    # p = val_idx*val_size
+    # print("p: {}".format(p))
+    #
+    # q = (val_idx + 1) * val_size
+    # print("q: {}".format(q))
+
+    train_graphs = graphs[:len(graphs)-val_size]
     # if val_idx < 9:
         # TODO: fix this as well
         # train_graphs = train_graphs + graphs[p:]
-    val_graphs = graphs[p:]
+    val_graphs = graphs[len(graphs)-val_size:]
     print('Num training graphs: ', len(train_graphs), 
           '; Num validation graphs: ', len(val_graphs))
 
