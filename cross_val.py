@@ -9,7 +9,8 @@ from graph_sampler import GraphSampler
 
 def prepare_val_data(graphs, args, val_idx, max_nodes=0):
 
-    np.random.shuffle(graphs)
+    # TODO: make shuffle work for numpy.memmap
+    # np.random.shuffle(graphs)
     val_size = len(graphs) // 10
     p = (val_idx + 1) * val_size
     q = val_idx*val_size
