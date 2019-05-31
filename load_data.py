@@ -30,6 +30,7 @@ def read_graphfile(datadir, dataname, max_nodes=None):
                 line=line.strip("\n")
                 node_labels+=[int(line) - 1]
         num_unique_node_labels = max(node_labels) + 1
+        print("Length of node labels {}".format(len(node_labels)))
     except IOError:
         print('No node labels')
  

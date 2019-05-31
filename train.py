@@ -441,6 +441,8 @@ def pkl_task(args, feat=None):
 
 def benchmark_task(args, writer=None, feat='node-label'):
     graphs = load_data.read_graphfile(args.datadir, args.bmname, max_nodes=args.max_nodes)
+    print("Created {} graphs".format(len(graphs)))
+    print("Graph 0 has node length".format(len(graphs[0].nodes)))
     
     if feat == 'node-feat' and 'feat_dim' in graphs[0].graph:
         print('Using node features')
