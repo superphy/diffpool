@@ -66,7 +66,7 @@ def read_graphfile(datadir, dataname, max_nodes=None):
     graph_labels = np.array([label_map_to_int[l] for l in graph_labels])
     #if label_has_zero:
     #    graph_labels += 1
-    print("Length of label_vals is {}".format(len(label_vals)))
+    print("Length of graph_labels is {}".format(len(graph_labels)))
     
     filename_adj=prefix + '_A.txt'
     adj_list={i:[] for i in range(1,len(graph_labels)+1)}    
@@ -82,8 +82,10 @@ def read_graphfile(datadir, dataname, max_nodes=None):
     for k in index_graph.keys():
         index_graph[k]=[u-1 for u in set(index_graph[k])]
     print("Length of adj_list is {}".format(len(adj_list.keys())))
+    print("Keys are {}".format(adj_list.keys()))
 
     graphs=[]
+    print("Range calculation will be {}".format(range(1,1+len(adj_list))))
     for i in range(1,1+len(adj_list)):
         # indexed from 1 here
         G=nx.from_edgelist(adj_list[i])
