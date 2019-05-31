@@ -90,6 +90,7 @@ def read_graphfile(datadir, dataname, max_nodes=None):
         # indexed from 1 here
         G=nx.from_edgelist(adj_list[i])
         if max_nodes is not None and G.number_of_nodes() > max_nodes:
+            print("max_nodes is {} not None".format(max_nodes))
             continue
       
         # add features and labels
