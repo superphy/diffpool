@@ -486,26 +486,28 @@ def benchmark_task_val(args, writer=None, feat='node-label', iterations: int = 1
     all_vals = []
     graphs = load_data.read_graphfile(args.datadir, args.bmname, max_nodes=args.max_nodes)
 
-    print("Created {} graphs".format(len(graphs)))
-    print("Graph 0 has node length".format(len(graphs[0].nodes)))
-    
-    if feat == 'node-feat' and 'feat_dim' in graphs[0].graph:
-        print('Using node features')
-        input_dim = graphs[0].graph['feat_dim']
-    elif feat == 'node-label' and 'label' in graphs[0].node[0]:
-        print('Using node labels')
-        for G in graphs:
-            for u in G.nodes():
-                G.node[u]['feat'] = np.array(G.node[u]['label'])
-    else:
-        print('Using constant labels')
-        featgen_const = featgen.ConstFeatureGen(np.ones(args.input_dim, dtype=float))
-        for G in graphs:
-            featgen_const.gen_node_features(G)
+    print("Using {} graphs".format(len(graphs)))
+    # print("Graph 0 has node length".format(len(graphs[0].nodes)))
+    #
+    # if feat == 'node-feat' and 'feat_dim' in graphs[0].graph:
+    #     print('Using node features')
+    #     input_dim = graphs[0].graph['feat_dim']
+    # elif feat == 'node-label' and 'label' in graphs[0].node[0]:
+    #     print('Using node labels')
+    #     for G in graphs:
+    #         for u in G.nodes():
+    #             G.node[u]['feat'] = np.array(G.node[u]['label'])
+    # else:
+    #     print('Using constant labels')
+    #     featgen_const = featgen.ConstFeatureGen(np.ones(args.input_dim, dtype=float))
+    #     for G in graphs:
+    #         featgen_const.gen_node_features(G)
 
     for i in range(iterations):
         train_dataset, val_dataset, max_num_nodes, input_dim, assign_input_dim = \
-                cross_val.prepare_val_data(graphs, args, i, max_nodes=args.max_nodes)
+                cross_val.prepare_val_data(
+                    graphs, args, i,
+                    max_nodes=args.max_nodes)
         if args.method == 'soft-assign':
             print('Method: soft-assign')
             model = encoders.SoftPoolingGcnEncoder(

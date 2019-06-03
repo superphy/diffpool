@@ -4,10 +4,12 @@ import torch
 
 import pickle
 import random
+import typing
 
 from graph_sampler import GraphSampler
 
-def prepare_val_data(graphs, args, val_idx, max_nodes=0):
+
+def prepare_val_data(graphs: typing.List[str], args, val_idx, max_nodes=0):
 
     random.shuffle(graphs)
     val_size = len(graphs) // 10
@@ -18,12 +20,12 @@ def prepare_val_data(graphs, args, val_idx, max_nodes=0):
     print('Num training graphs: ', len(train_graphs), 
           '; Num validation graphs: ', len(val_graphs))
 
-    print('Number of graphs: ', len(graphs))
-    print('Number of edges: ', sum([G.number_of_edges() for G in graphs]))
-    print('Max, avg, std of graph size: ', 
-            max([G.number_of_nodes() for G in graphs]), ', '
-            "{0:.2f}".format(np.mean([G.number_of_nodes() for G in graphs])), ', '
-            "{0:.2f}".format(np.std([G.number_of_nodes() for G in graphs])))
+    # print('Number of graphs: ', len(graphs))
+    # print('Number of edges: ', sum([G.number_of_edges() for G in graphs]))
+    # print('Max, avg, std of graph size: ',
+    #         max([G.number_of_nodes() for G in graphs]), ', '
+    #         "{0:.2f}".format(np.mean([G.number_of_nodes() for G in graphs])), ', '
+    #         "{0:.2f}".format(np.std([G.number_of_nodes() for G in graphs])))
 
     # minibatch
     dataset_sampler = GraphSampler(train_graphs, normalize=False, max_num_nodes=max_nodes,
