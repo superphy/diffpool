@@ -131,7 +131,7 @@ class GraphSampler(torch.utils.data.Dataset):
             self.max_num_nodes = max_num_nodes
 
     def __len__(self):
-        return len(self.adj_all)
+        return len(self.G_list)
 
     def __getitem__(self, idx):
         G = nx.read_gpickle(self.G_list[idx])
