@@ -125,8 +125,13 @@ class GraphSampler(torch.utils.data.Dataset):
         self.G_list = G_list
 
         if max_num_nodes == 0:
-            self.max_num_nodes = max([nx.read_gpickle(G).number_of_nodes()
-                                      for G in G_list])
+            current_max = 0
+            for G in G_list:
+                n = nx.read_gpickle(G).number_of_nodes()
+                if n > current_max:
+                    current_max = n
+            self.max_num_nodes = current_max
+            print("Setting max_num_nodes to {}".format(self.max_num_nodes))
         else:
             self.max_num_nodes = max_num_nodes
 
