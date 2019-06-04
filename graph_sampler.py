@@ -94,10 +94,12 @@ class GraphSampler(torch.utils.data.Dataset):
         if self._feat_dim is not None:
             return self._feat_dim
         else:
-            _, feature, _, _ = self.parse(
+            _, feature, assign_feat, _ = self.parse(
                 nx.read_gpickle(self.G_list[0])
             )
             self._feat_dim = feature.shape[1]
+            # Set assign_feat too since we have it
+            self._assign_feat_dim = assign_feat
             return self._feat_dim
 
     @property
@@ -105,10 +107,12 @@ class GraphSampler(torch.utils.data.Dataset):
         if self._assign_feat_dim is not None:
             return self._assign_feat_dim
         else:
-            _, _, assign_feat, _ = self.parse(
+            _, feature, assign_feat, _ = self.parse(
                 nx.read_gpickle(self.G_list[0])
             )
             self._assign_feat_dim = assign_feat
+            # Set feat_dim too since we have it
+            self._feat_dim = feature.shape[1]
             return self._assign_feat_dim
 
     def __init__(self, G_list, features='default', normalize=True,
@@ -125,6 +129,7 @@ class GraphSampler(torch.utils.data.Dataset):
         self.G_list = G_list
 
         if max_num_nodes == 0:
+            print("max_num_nodes was not specified, trying to calculate...")
             current_max = 0
             for G in G_list:
                 n = nx.read_gpickle(G).number_of_nodes()
@@ -134,6 +139,11 @@ class GraphSampler(torch.utils.data.Dataset):
             print("Setting max_num_nodes to {}".format(self.max_num_nodes))
         else:
             self.max_num_nodes = max_num_nodes
+
+        # Pre-calculate the properties or this is going to stall
+        print("Calculated feature_dim to be {}".format(self.feat_dim))
+        print("Calculated the assign_feat_dim to be {}".format(
+            self.assign_feat_dim))
 
     def __len__(self):
         return len(self.G_list)

@@ -28,6 +28,7 @@ def prepare_val_data(graphs: typing.List[str], args, val_idx, max_nodes=0):
     #         "{0:.2f}".format(np.std([G.number_of_nodes() for G in graphs])))
 
     # minibatch
+    print("Creating GraphSampler instances....")
     dataset_sampler = GraphSampler(train_graphs, normalize=False, max_num_nodes=max_nodes,
             features=args.feature_type)
     train_dataset_loader = torch.utils.data.DataLoader(
@@ -43,6 +44,7 @@ def prepare_val_data(graphs: typing.List[str], args, val_idx, max_nodes=0):
             batch_size=args.batch_size, 
             shuffle=False,
             num_workers=args.num_workers)
+    print("Done creating GraphSampler instances...")
 
     return train_dataset_loader, val_dataset_loader, \
             dataset_sampler.max_num_nodes, dataset_sampler.feat_dim, dataset_sampler.assign_feat_dim
