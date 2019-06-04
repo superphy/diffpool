@@ -616,7 +616,7 @@ def arg_parse():
     parser.set_defaults(datadir='data',
                         logdir='log',
                         dataset='syn1v2',
-                        max_nodes=None,
+                        max_nodes=0,
                         cuda='0',
                         feature_type='default',
                         lr=0.001,
