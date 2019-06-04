@@ -138,6 +138,7 @@ class GraphSampler(torch.utils.data.Dataset):
             self.max_num_nodes = current_max
             print("Setting max_num_nodes to {}".format(self.max_num_nodes))
         else:
+            print("max_num_nodes was specified as {}".format(max_num_nodes))
             self.max_num_nodes = max_num_nodes
 
         # Pre-calculate the properties or this is going to stall
