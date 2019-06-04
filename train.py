@@ -206,6 +206,7 @@ def train(dataset, model, args, same_feat=True, val_dataset=None, test_dataset=N
             begin_time = time.time()
             model.zero_grad()
             adj = Variable(data['adj'].float(), requires_grad=False).cuda()
+            print("Seeing data['feats'].float() as {}".format(data['feats'].float()))
             h0 = Variable(data['feats'].float(), requires_grad=False).cuda()
             print("Seeing data['label'].long() as {}".format(data['label'].long()))
             label = Variable(data['label'].long()).cuda()
