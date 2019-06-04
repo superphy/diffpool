@@ -207,6 +207,7 @@ def train(dataset, model, args, same_feat=True, val_dataset=None, test_dataset=N
             model.zero_grad()
             adj = Variable(data['adj'].float(), requires_grad=False).cuda()
             h0 = Variable(data['feats'].float(), requires_grad=False).cuda()
+            print("Seeing data['label'].long() as {}".format(data['label'].long()))
             label = Variable(data['label'].long()).cuda()
             batch_num_nodes = data['num_nodes'].int().numpy() if mask_nodes else None
             assign_input = Variable(data['assign_feats'].float(), requires_grad=False).cuda()
