@@ -168,8 +168,8 @@ class GraphSampler(torch.utils.data.Dataset):
         # use all nodes for aggregation (baseline)
 
         return {'adj':adj_padded,
-                'feats':torch.nn.functional.onehot(feature),
+                'feats':torch.nn.functional.one_hot(feature),
                 'label':label,
                 'num_nodes': num_nodes,
-                'assign_feats':torch.nn.functional.onehot(assign_feat)}
+                'assign_feats':torch.nn.functional.one_hot(assign_feat)}
 
