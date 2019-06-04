@@ -31,11 +31,15 @@ def prepare_val_data(graphs: typing.List[str], args, val_idx, max_nodes=0):
     print("Creating GraphSampler instances....")
     dataset_sampler = GraphSampler(train_graphs, normalize=False, max_num_nodes=max_nodes,
             features=args.feature_type)
+    print("Done creating GraphSampler instances")
+    print("Trying to create DataLoader instances with batch_size {} and "
+          "num_workers {}".format(args.batch_size, args.num_workers))
     train_dataset_loader = torch.utils.data.DataLoader(
             dataset_sampler, 
             batch_size=args.batch_size, 
             shuffle=True,
             num_workers=args.num_workers)
+    print("Done creating DataLoader instances for training")
 
     dataset_sampler = GraphSampler(val_graphs, normalize=False, max_num_nodes=max_nodes,
             features=args.feature_type)
