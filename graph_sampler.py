@@ -163,6 +163,8 @@ class GraphSampler(torch.utils.data.Dataset):
         adj_padded = np.zeros((self.max_num_nodes, self.max_num_nodes))
         adj_padded[:num_nodes, :num_nodes] = adj
 
+        print("Going to return 'feature' as {}".format(feature))
+
         # use all nodes for aggregation (baseline)
 
         return {'adj':adj_padded,
