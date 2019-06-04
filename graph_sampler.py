@@ -124,8 +124,11 @@ class GraphSampler(torch.utils.data.Dataset):
         self.assign_feat = assign_feat
         # Attributes that need to be pre-calculated
         self.max_num_nodes = max_num_nodes
-        self._feat_dim = feat_dim
-        self._assign_feat_dim = None
+        # self._feat_dim = feat_dim
+        # self._assign_feat_dim = None
+        # TODO: lets not hard code this
+        self._feat_dim = 1
+        self._assign_feat_dim = 1
         # Lists
         self.G_list = G_list
 
