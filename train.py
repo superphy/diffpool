@@ -227,9 +227,11 @@ def train(dataset, model, args, same_feat=True, val_dataset=None, test_dataset=N
             total_time += elapsed
 
             # log once per XX epochs
-            if epoch % 10 == 0 and batch_idx == len(dataset) // 2 and args.method == 'soft-assign' and writer is not None:
-                log_assignment(model.assign_tensor, writer, epoch, writer_batch_idx)
-                log_graph(adj, batch_num_nodes, writer, epoch, writer_batch_idx, model.assign_tensor)
+            # TODO: make this work for small batch sizes
+            if args.batch_size >= 4:
+                if epoch % 10 == 0 and batch_idx == len(dataset) // 2 and args.method == 'soft-assign' and writer is not None:
+                    log_assignment(model.assign_tensor, writer, epoch, writer_batch_idx)
+                    log_graph(adj, batch_num_nodes, writer, epoch, writer_batch_idx, model.assign_tensor)
         avg_loss /= batch_idx + 1
         if writer is not None:
             writer.add_scalar('loss/avg_loss', avg_loss, epoch)
