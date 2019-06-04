@@ -25,6 +25,7 @@ class GraphSampler(torch.utils.data.Dataset):
         label = G.graph['label']
         # feat matrix: max_num_nodes x feat_dim
         if self.features == 'default':
+            print("Creating a zero array with max_num_nodes {} and feat_dim {}".format(self.max_num_nodes, self.feat_dim))
             f = np.zeros((self.max_num_nodes, self.feat_dim), dtype=float)
             for i, u in enumerate(G.nodes()):
                 f[i, :] = G.node[u]['feat']
