@@ -133,9 +133,12 @@ class GraphSampler(torch.utils.data.Dataset):
     def __len__(self):
         return len(self.G_list)
 
+    def _load(self, f: str):
+        G = nx.read_gpickle(f)
+        return self.parse(G)
+
     def __getitem__(self, idx):
-        G = nx.read_gpickle(self.G_list[idx])
-        adj, feature, assign_feat, label = self.parse(G)
+        adj, feature, assign_feat, label = self._load(self.G_list[idx])
         num_nodes = adj.shape[0]
         adj_padded = np.zeros((self.max_num_nodes, self.max_num_nodes))
         adj_padded[:num_nodes, :num_nodes] = adj
